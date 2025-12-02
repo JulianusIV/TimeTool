@@ -32,9 +32,10 @@ namespace TimeTool
                     RegisterDefaultCommandProcessors = true,
                     UseDefaultCommandErrorHandler = true
                 })
+                
                 .Build();
 
-            await client.ConnectAsync();
+            await client.ConnectAsync(new DSharpPlus.Entities.DiscordActivity("the clocks.", DSharpPlus.Entities.DiscordActivityType.Watching));
             await Task.Delay(-1);
         }
     }
