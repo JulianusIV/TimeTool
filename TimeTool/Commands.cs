@@ -121,7 +121,21 @@ namespace TimeTool
             string? targetTz = db.Timezones.FirstOrDefault(x => x.Id == user.Id)?.IANADescriptor;
             if (targetTz is null)
             {
-                await ctx.RespondAsync("This user has not set their timezone.");
+                var commands = await ctx.Client.GetGlobalApplicationCommandsAsync();
+                var mention = commands.First(x =>
+                {
+                    CommandAttribute? attribute = (CommandAttribute?)typeof(Commands)
+                        .GetMethod(nameof(SetTimezone))?
+                        .GetCustomAttribute(typeof(CommandAttribute));
+                    return attribute is not null && x.Name == attribute.Name;
+                }).Mention;
+
+                var referralMessage = new DiscordMessageBuilder()
+                    .EnableV2Components()
+                    .AddTextDisplayComponent("This user has not set their timezone.\n" + $"To do so they can use the {mention} command.")
+                    .AddActionRowComponent(new DiscordLinkButtonComponent("https://discord.com/oauth2/authorize?client_id=1443796292164653136", "Add me on Discord."));
+
+                await ctx.RespondAsync(referralMessage);
                 return;
             }
 
