@@ -91,7 +91,7 @@ namespace TimeTool
             TimeZoneInfo tzInfo = TimeZoneInfo.FindSystemTimeZoneById(timezoneName);
             DateTime localTime = TimeZoneInfo.ConvertTime(sourceTime, sourceTz, tzInfo);
             responseBuilder.AppendLine($" {localTime.TimeOfDay:hh\\:mm} in that timezone.");
-            if (!tzSet)
+            if (!tzSet && time is not null)
             {
                 responseBuilder.AppendLine("Could not find your timezone, so UTC was assumed. ");
                 var commands = await ctx.Client.GetGlobalApplicationCommandsAsync();
